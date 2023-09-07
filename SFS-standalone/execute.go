@@ -31,10 +31,10 @@ func Execute(job PidI, p string, pids chan PidI, core string, queue chan PidI) {
 	start_time := job.St
 	t1 := time.Now()
 	if p == "N" {
-		cmd = exec.Command("schedtool", "-N", "-a", core, "-e", "python", "fib.py", strconv.Itoa(job.N), strconv.Itoa(job.Id))
+		cmd = exec.Command("sudo", "schedtool", "-N", "-a", core, "-e", "python3", "fib.py", strconv.Itoa(job.N), strconv.Itoa(job.Id))
 	} else {
 		//cmd = exec.Command("schedtool","-N","-a",core,"-e","python","fib.py", strconv.Itoa(job.N))
-		cmd = exec.Command("schedtool", "-F", "-p", "20", "-a", core, "-e", "python", "fib.py", strconv.Itoa(job.N), strconv.Itoa(job.Id))
+		cmd = exec.Command("sudo", "schedtool", "-F", "-p", "20", "-a", "0xfff", "-e", "python3", "fib.py", strconv.Itoa(job.N), strconv.Itoa(job.Id))
 	}
 	err := cmd.Start()
 	if err != nil {
@@ -79,9 +79,9 @@ func ExecuteNoChannel(wg *sync.WaitGroup, job Action, p string, pids chan PidI, 
 	t1 := time.Now()
 	var cmd *exec.Cmd
 	if p == "N" {
-		cmd = exec.Command("schedtool", "-N", "-a", cpuC, "-e", "python", job.Exec, strconv.Itoa(job.Para), strconv.Itoa(job.Id))
+		cmd = exec.Command("sudo", "schedtool", "-N", "-a", cpuC, "-e", "python3", job.Exec, strconv.Itoa(job.Para), strconv.Itoa(job.Id))
 	} else {
-		cmd = exec.Command("schedtool", "-R", "-p", "20", "-a", "0x1", "-e", "python", job.Exec, strconv.Itoa(job.Para), strconv.Itoa(job.Id))
+		cmd = exec.Command("sudo", "schedtool", "-R", "-p", "20", "-a", "0x1", "-e", "python3", job.Exec, strconv.Itoa(job.Para), strconv.Itoa(job.Id))
 	}
 	err := cmd.Start()
 	if err != nil {
